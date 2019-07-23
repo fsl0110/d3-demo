@@ -1,0 +1,33 @@
+@import "~normalize-scss/sass/normalize/import-now";
+
+$color-font: gainsboro;
+$color-link: aqua;
+$color-background: white;
+$width-max: 1200px;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: $color-font;
+  height: 100%;
+  margin: 0;
+  background: $color-background;
+  padding: 0 1rem;
+}
+
+a {
+  color: $color-link;
+}
+
+.svg__canvas {
+  display: block;
+  background: grey;
+}
+
+@import "components/index.scss";
+@import "pages/index.scss";

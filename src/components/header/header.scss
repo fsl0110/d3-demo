@@ -1,0 +1,24 @@
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-bottom: 2px solid $color-font;
+  max-width: $width-max;
+  margin: 0 auto;
+
+  .link {
+    text-decoration: none;
+    color: aqua;
+    font-size: 1.2rem;
+  }
+
+  .link + .link {
+    margin-left: 1rem;
+  }
+
+  .active {
+    color: gainsboro;
+    font-weight: bold;
+  }
+}

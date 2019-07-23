@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders toMatchSnapshot 1`] = `
+<svg
+  className="svg__canvas"
+  height="300"
+  width="600"
+/>
+`;

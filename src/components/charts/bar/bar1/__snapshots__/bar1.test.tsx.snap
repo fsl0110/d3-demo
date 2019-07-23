@@ -1,0 +1,277 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders toMatchSnapshot 1`] = `
+<Fragment>
+  <svg
+    key="faux-dom-0"
+    style={Object {}}
+  >
+    <g
+      key="faux-dom-0"
+      style={Object {}}
+      transform="translate(50,0)"
+    >
+      <g
+        fill="none"
+        fontFamily="sans-serif"
+        fontSize={10}
+        key="faux-dom-0"
+        style={Object {}}
+        textAnchor="middle"
+        transform="translate(0,100)"
+      >
+        <path
+          className="domain"
+          d="M0.5,6V0.5H500.5V6"
+          key="faux-dom-0"
+          stroke="currentColor"
+          style={Object {}}
+        />
+        <g
+          className="tick"
+          key="faux-dom-1"
+          opacity={1}
+          style={Object {}}
+          transform="translate(0.5,0)"
+        >
+          <line
+            key="faux-dom-0"
+            stroke="currentColor"
+            style={Object {}}
+            y2={6}
+          />
+          <text
+            dy="0.71em"
+            fill="currentColor"
+            key="faux-dom-1"
+            style={Object {}}
+            y={9}
+          >
+            0
+          </text>
+        </g>
+        <g
+          className="tick"
+          key="faux-dom-2"
+          opacity={1}
+          style={Object {}}
+          transform="translate(63,0)"
+        >
+          <line
+            key="faux-dom-0"
+            stroke="currentColor"
+            style={Object {}}
+            y2={6}
+          />
+          <text
+            dy="0.71em"
+            fill="currentColor"
+            key="faux-dom-1"
+            style={Object {}}
+            y={9}
+          >
+            5
+          </text>
+        </g>
+        <g
+          className="tick"
+          key="faux-dom-3"
+          opacity={1}
+          style={Object {}}
+          transform="translate(125.5,0)"
+        >
+          <line
+            key="faux-dom-0"
+            stroke="currentColor"
+            style={Object {}}
+            y2={6}
+          />
+          <text
+            dy="0.71em"
+            fill="currentColor"
+            key="faux-dom-1"
+            style={Object {}}
+            y={9}
+          >
+            10
+          </text>
+        </g>
+        <g
+          className="tick"
+          key="faux-dom-4"
+          opacity={1}
+          style={Object {}}
+          transform="translate(188,0)"
+        >
+          <line
+            key="faux-dom-0"
+            stroke="currentColor"
+            style={Object {}}
+            y2={6}
+          />
+          <text
+            dy="0.71em"
+            fill="currentColor"
+            key="faux-dom-1"
+            style={Object {}}
+            y={9}
+          >
+            15
+          </text>
+        </g>
+        <g
+          className="tick"
+          key="faux-dom-5"
+          opacity={1}
+          style={Object {}}
+          transform="translate(250.5,0)"
+        >
+          <line
+            key="faux-dom-0"
+            stroke="currentColor"
+            style={Object {}}
+            y2={6}
+          />
+          <text
+            dy="0.71em"
+            fill="currentColor"
+            key="faux-dom-1"
+            style={Object {}}
+            y={9}
+          >
+            20
+          </text>
+        </g>
+        <g
+          className="tick"
+          key="faux-dom-6"
+          opacity={1}
+          style={Object {}}
+          transform="translate(313,0)"
+        >
+          <line
+            key="faux-dom-0"
+            stroke="currentColor"
+            style={Object {}}
+            y2={6}
+          />
+          <text
+            dy="0.71em"
+            fill="currentColor"
+            key="faux-dom-1"
+            style={Object {}}
+            y={9}
+          >
+            25
+          </text>
+        </g>
+        <g
+          className="tick"
+          key="faux-dom-7"
+          opacity={1}
+          style={Object {}}
+          transform="translate(375.5,0)"
+        >
+          <line
+            key="faux-dom-0"
+            stroke="currentColor"
+            style={Object {}}
+            y2={6}
+          />
+          <text
+            dy="0.71em"
+            fill="currentColor"
+            key="faux-dom-1"
+            style={Object {}}
+            y={9}
+          >
+            30
+          </text>
+        </g>
+        <g
+          className="tick"
+          key="faux-dom-8"
+          opacity={1}
+          style={Object {}}
+          transform="translate(438,0)"
+        >
+          <line
+            key="faux-dom-0"
+            stroke="currentColor"
+            style={Object {}}
+            y2={6}
+          />
+          <text
+            dy="0.71em"
+            fill="currentColor"
+            key="faux-dom-1"
+            style={Object {}}
+            y={9}
+          >
+            35
+          </text>
+        </g>
+        <g
+          className="tick"
+          key="faux-dom-9"
+          opacity={1}
+          style={Object {}}
+          transform="translate(500.5,0)"
+        >
+          <line
+            key="faux-dom-0"
+            stroke="currentColor"
+            style={Object {}}
+            y2={6}
+          />
+          <text
+            dy="0.71em"
+            fill="currentColor"
+            key="faux-dom-1"
+            style={Object {}}
+            y={9}
+          >
+            40
+          </text>
+        </g>
+      </g>
+      <rect
+        height="20"
+        key="faux-dom-1"
+        style={
+          Object {
+            "fill": "red",
+          }
+        }
+        width={125}
+        x={0}
+        y={25}
+      />
+      <rect
+        height="20"
+        key="faux-dom-2"
+        style={
+          Object {
+            "fill": "blue",
+          }
+        }
+        width={250}
+        x={0}
+        y={50}
+      />
+      <rect
+        height="20"
+        key="faux-dom-3"
+        style={
+          Object {
+            "fill": "green",
+          }
+        }
+        width={375}
+        x={0}
+        y={75}
+      />
+    </g>
+  </svg>
+</Fragment>
+`;

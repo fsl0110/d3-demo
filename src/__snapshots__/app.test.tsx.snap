@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders toMatchSnapshot 1`] = `
+<BrowserRouter>
+  <Header />
+  <Page>
+    <Switch>
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/"
+      />
+      <Route
+        component={[Function]}
+        path="/barcharts"
+      />
+      <Route
+        component={[Function]}
+        path="/timelinecharts"
+      />
+      <Route
+        path="*"
+        render={[Function]}
+      />
+    </Switch>
+  </Page>
+</BrowserRouter>
+`;

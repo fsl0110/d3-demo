@@ -15,6 +15,7 @@ export const createChart = (
     { color: "yellow", rating: "ok" },
     { color: "green", rating: "good" }
   ];
+
   const x = d3
     .scaleOrdinal()
     .range([0, 100, 200, 300, 400, 500])

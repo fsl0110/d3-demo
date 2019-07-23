@@ -2,12 +2,13 @@ import ReactFauxDOM from "react-faux-dom";
 import * as d3 from "d3";
 
 export const createChart = (
-  data: { time: string; population: number }[],
+  data: { color: string; rating: string }[],
   width: number,
   height: number,
   animate?: any
 ) => {
   const el = ReactFauxDOM.createElement("svg");
+
   const mockData = [
     {
       time: "1980-01-01",

@@ -1,10 +1,10 @@
 import React, { PureComponent } from "react";
-import { createChart } from "./timeline1Create";
+import { createChart } from "./line1Create";
 
 export interface Props {
-  data: { color: string; rating: string }[];
-  width: number;
-  height: number;
+  data?: { color: string; rating: string }[];
+  width?: number;
+  height?: number;
 }
 
 export interface State {
@@ -13,7 +13,7 @@ export interface State {
   height: number;
 }
 
-export class Timeline1 extends PureComponent<Props, State> {
+export class Line1 extends PureComponent<Props, State> {
   readonly state: State = {
     data: [],
     width: 0,

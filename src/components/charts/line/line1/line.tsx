@@ -1,15 +1,19 @@
 import React, { FC } from "react";
 import ReactFauxDOM from "react-faux-dom";
 import * as d3 from "d3";
-import { LineChartConfig, Data, Scales } from "./chart";
+import { ChartDefaultConfig, Data, Scales } from "./chart.types";
 
 export interface Props {
   scales: Scales;
+  config: ChartDefaultConfig;
   data: Data;
-  config: LineChartConfig;
 }
-export const Line: FC<Props> = ({ data, scales, config }) => {
-  const createChart = (scales: Scales, data: Data, config: LineChartConfig) => {
+export const Line: FC<Props> = ({ scales, config, data }) => {
+  const createChart = (
+    scales: Scales,
+    config: ChartDefaultConfig,
+    data: Data
+  ) => {
     const el = ReactFauxDOM.createElement("path");
 
     // generate line
@@ -42,5 +46,5 @@ export const Line: FC<Props> = ({ data, scales, config }) => {
     return el.toReact();
   };
 
-  return <>{createChart(scales, data, config)}</>;
+  return <>{createChart(scales, config, data)}</>;
 };

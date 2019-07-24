@@ -1,15 +1,15 @@
 import React, { FC } from "react";
 import ReactFauxDOM from "react-faux-dom";
 import * as d3 from "d3";
-import { LineChartConfig, Scales } from "./chart";
+import { ChartDefaultConfig, Scales } from "./chart.types";
 
 export interface Props {
   scales: Scales;
-  config: LineChartConfig;
+  config: ChartDefaultConfig;
 }
 
 export const YAxis: FC<Props> = ({ scales, config }) => {
-  const create = (scales: Scales, config: LineChartConfig) => {
+  const create = (scales: Scales, config: ChartDefaultConfig) => {
     const el = ReactFauxDOM.createElement("g");
     const { yAxis, margins, dimensions } = config;
 
@@ -17,10 +17,10 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
     const y_axis = d3
       .axisLeft(scales.yScale)
       .scale(scales.yScale)
-      .tickSize(yAxis.tickSize || 5)
-      .tickPadding(yAxis.tickPadding || 5)
-      .ticks(yAxis.ticks || 8) // TODO: compute default ticks from the height of the chart
-      .tickFormat(yAxis.tickFormat || null);
+      .tickSize(yAxis.ticks.size)
+      .tickPadding(yAxis.ticks.padding)
+      .ticks(yAxis.ticks.count)
+      .tickFormat(yAxis.ticks.format);
 
     // define axis position
     let axisXTranslate = margins.left + margins.right;
@@ -32,8 +32,8 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
     let textYTranslate = dimensions.height / 2;
     let textAnchor = "start";
 
-    if (yAxis.labelPosition) {
-      switch (yAxis.labelPosition) {
+    if (yAxis.label.position) {
+      switch (yAxis.label.position) {
         case "center":
           textYTranslate = dimensions.height / 2;
           break;
@@ -57,7 +57,7 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
       .call(y_axis)
       .append("g")
       .append("text")
-      .text(yAxis.label || "")
+      .text(yAxis.label.text)
       .attr("class", "chart_y-label")
       .attr("fill", "black")
       .attr("text-anchor", `${textAnchor}`)

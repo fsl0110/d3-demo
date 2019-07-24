@@ -4,18 +4,16 @@ import Skeleton from "react-loading-skeleton";
 import produce from "immer";
 import { axiosOpenFDA, openFDA } from "../../utils/api/openFDA";
 import { Line1 } from "../../components";
-import {
-  LineChartConfig,
-  Dimensions
-} from "../../components/charts/line/line1/chart";
+import { ChartDefaultConfig } from "../../components/charts/line/line1/chart.types";
 export type Data = [number, number][];
 
 const config = {
-  className: "line1",
+  className: "chart",
   dimensions: {
-    width: 1200,
+    width: 500,
     height: 300
   },
+  flex: false,
   margins: {
     top: 20,
     left: 20,
@@ -23,18 +21,32 @@ const config = {
     right: 20
   },
   xAxis: {
-    className: "x-axis",
-    label: "Time since 2012"
+    className: "chart__x-axis",
+    label: {
+      text: "Time since 2012"
+    },
+    ticks: {
+      count: 5,
+      size: 5,
+      padding: 0
+    }
   },
   yAxis: {
-    className: "y-axis",
-    label: "Amount of Reports"
+    className: "chart__y-axis",
+    label: {
+      text: "Amount of Reports"
+    },
+    ticks: {
+      count: 5,
+      size: 5,
+      padding: 0
+    }
   }
 };
 
 export interface State {
   data: [number, number][];
-  config: LineChartConfig;
+  config: ChartDefaultConfig;
 }
 
 export class LineCharts extends PureComponent<{}, State> {
@@ -43,9 +55,9 @@ export class LineCharts extends PureComponent<{}, State> {
     data: [],
     config
   };
+
   componentDidMount() {
-    const term = "";
-    axiosOpenFDA(openFDA.foodEnforcementReports(term))
+    axiosOpenFDA(openFDA.foodEnforcementReports(""))
       .then((res: AxiosResponse) => {
         this.setState({
           data: res.data
@@ -53,28 +65,23 @@ export class LineCharts extends PureComponent<{}, State> {
       })
       .catch((err: AxiosError) => null);
 
+    /*     window.addEventListener("resize", this.updateDimensions);
     const dimensions = this.ref.current.getBoundingClientRect();
     const { width, height } = this.state.config.dimensions;
     if (dimensions.width !== width || dimensions.height !== height) {
       this.updateDimensions();
-    }
-
-    window.addEventListener("resize", this.updateDimensions);
+    } */
   }
 
-  updateDimensions = () => {
-    const dimensions = this.ref.current.getBoundingClientRect();
+  /*   updateDimensions = () => {
+    const dimensions: ClientRect = this.ref.current.getBoundingClientRect();
     this.setState(
       produce((draft: any) => {
         draft.config.dimensions.width = dimensions.width;
-        /* draft.config.svgDimensions.height = dimensions.height; */
+      
       })
     );
-  };
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
-  }
+  }; */
 
   render() {
     const { data, config } = this.state;

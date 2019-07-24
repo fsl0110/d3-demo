@@ -1,22 +1,17 @@
 import React, { FC } from "react";
 import ReactFauxDOM from "react-faux-dom";
 import * as d3 from "d3";
-import { LineChartConfig, Scales, Dimensions } from "./chart";
+import { LineChartConfig, Scales } from "./chart";
 
 export interface Props {
   scales: Scales;
-  dimensions: Dimensions;
   config: LineChartConfig;
 }
 
-export const YAxis: FC<Props> = ({ scales, config, dimensions }) => {
-  const create = (
-    scales: Scales,
-    config: LineChartConfig,
-    dimensions: Dimensions
-  ) => {
+export const YAxis: FC<Props> = ({ scales, config }) => {
+  const create = (scales: Scales, config: LineChartConfig) => {
     const el = ReactFauxDOM.createElement("g");
-    const { yAxis } = config;
+    const { yAxis, margins, dimensions } = config;
 
     // create axis
     const y_axis = d3
@@ -28,12 +23,12 @@ export const YAxis: FC<Props> = ({ scales, config, dimensions }) => {
       .tickFormat(yAxis.tickFormat || null);
 
     // define axis position
-    let axis_x_translate = dimensions.marginLeft + dimensions.marginRight;
+    let axis_x_translate = margins.left + margins.right;
     if (yAxis.label) {
-      axis_x_translate = axis_x_translate + dimensions.marginBottom;
+      axis_x_translate = axis_x_translate + margins.bottom;
     }
-    let axis_y_translate = dimensions.marginBottom;
-    let text_x_translate = dimensions.marginLeft + dimensions.marginLeft;
+    let axis_y_translate = margins.bottom;
+    let text_x_translate = margins.left + margins.left;
     let text_y_translate = dimensions.height / 2;
     let text_anchor = "start";
 
@@ -47,7 +42,7 @@ export const YAxis: FC<Props> = ({ scales, config, dimensions }) => {
           text_anchor = "end";
           break;
         case "bottom":
-          text_y_translate = dimensions.height - dimensions.marginBottom * 4; // TODO: *2.5 does not make sense
+          text_y_translate = dimensions.height - margins.bottom * 4; // TODO: *2.5 does not make sense
           break;
         default:
           return null;
@@ -75,5 +70,5 @@ export const YAxis: FC<Props> = ({ scales, config, dimensions }) => {
     return el.toReact();
   };
 
-  return <>{create(scales, config, dimensions)}</>;
+  return <>{create(scales, config)}</>;
 };

@@ -12,22 +12,20 @@ export type Data = [number, number][];
 
 const dimensions: Dimensions = {
   width: 1200,
-  height: 300,
-  marginTop: 20,
-  marginLeft: 20,
-  marginBottom: 20,
-  marginRight: 20
+  height: 300
 };
 
 const config = {
   className: "line1",
   dimensions: {
     width: 1200,
-    height: 300,
-    marginTop: 20,
-    marginLeft: 20,
-    marginBottom: 20,
-    marginRight: 20
+    height: 300
+  },
+  margins: {
+    top: 20,
+    left: 20,
+    bottom: 20,
+    right: 20
   },
   xAxis: {
     className: "x-axis",
@@ -41,18 +39,15 @@ const config = {
 
 export interface State {
   data: [number, number][];
-  dimensions: Dimensions;
   config: LineChartConfig;
 }
 
 export class LineCharts extends PureComponent<{}, State> {
   private ref: any = createRef<HTMLDivElement>();
-  state: State = {
+  readonly state: State = {
     data: [],
-    dimensions,
     config
   };
-
   componentDidMount() {
     const term = "";
     axiosOpenFDA(openFDA.foodEnforcementReports(term))
@@ -64,7 +59,7 @@ export class LineCharts extends PureComponent<{}, State> {
       .catch((err: AxiosError) => null);
 
     const dimensions = this.ref.current.getBoundingClientRect();
-    const { width, height } = this.state.dimensions;
+    const { width, height } = this.state.config.dimensions;
     if (dimensions.width !== width || dimensions.height !== height) {
       this.updateDimensions();
     }
@@ -78,7 +73,7 @@ export class LineCharts extends PureComponent<{}, State> {
 
     this.setState(
       produce((draft: any) => {
-        draft.dimensions.width = dimensions.width;
+        draft.config.dimensions.width = dimensions.width;
         /*       draft.config.svgDimensions.height = dimensions.height; */
       })
     );
@@ -90,11 +85,11 @@ export class LineCharts extends PureComponent<{}, State> {
 
   render() {
     const { data, config } = this.state;
-    console.log("width", this.state.dimensions.width);
+
     return (
       <div className="linechart" ref={this.ref}>
         {data ? (
-          <Line1 data={data} config={config} dimensions={dimensions} />
+          <Line1 data={data} config={config} />
         ) : (
           <Skeleton width={dimensions.width} height={dimensions.height} />
         )}

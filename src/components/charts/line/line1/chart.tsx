@@ -17,15 +17,19 @@ export interface Scales {
 export interface Dimensions {
   height: number;
   width: number;
-  marginTop: number;
-  marginLeft: number;
-  marginBottom: number;
-  marginRight: number;
+}
+
+export interface Margins {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
 }
 
 export interface LineChartConfig {
   className?: string;
   dimensions: Dimensions;
+  margins: Margins;
   xAxis: {
     className?: string;
     label?: string;
@@ -55,20 +59,17 @@ export interface LineChartConfig {
 
 export interface Props {
   data: [number, number][];
-  dimensions: Dimensions;
   config: LineChartConfig;
 }
 
 export interface State {
   data: [number, number][];
-  dimensions: Dimensions;
   config: LineChartConfig;
 }
 
 export class Line1 extends PureComponent<Props, State> {
   readonly state: State = {
     data: [],
-    dimensions: this.props.dimensions,
     config: this.props.config
   };
 
@@ -79,11 +80,11 @@ export class Line1 extends PureComponent<Props, State> {
       });
     }
 
-    if (prevState.dimensions !== nextProps.dimensions) {
+    /*     if (prevState.dimensions !== nextProps.dimensions) {
       return produce(prevState, (draft: State) => {
         draft.dimensions = nextProps.dimensions;
       });
-    }
+    } */
 
     if (prevState.config !== nextProps.config) {
       return produce(prevState, (draft: State) => {
@@ -94,23 +95,21 @@ export class Line1 extends PureComponent<Props, State> {
   }
 
   render() {
-    const { data, dimensions, config } = this.state;
-    const { xAxis, yAxis, className } = config;
+    const { data, config } = this.state;
+    const { xAxis, yAxis, className, dimensions, margins } = config;
     /** Merge new width and height after viewport resize here */
-    const width =
-      dimensions.width - dimensions.marginLeft - dimensions.marginRight;
-    const height =
-      dimensions.height - dimensions.marginTop - dimensions.marginBottom;
+    const width = dimensions.width - margins.left - margins.right;
+    const height = dimensions.height - margins.top - margins.bottom;
     const xScaleMinValue = Math.min(...data.map((d: any) => d[0]));
     const xScaleMaxValue = Math.max(...data.map((d: any) => d[0]));
     const yScaleMaxValue = Math.max(...data.map((d: any) => d[1]));
-    let yRange = height - dimensions.marginBottom;
+    let yRange = height - margins.bottom;
     if (xAxis.label) {
-      yRange = yRange - dimensions.marginLeft;
+      yRange = yRange - margins.left;
     }
-    let xRange = width - dimensions.marginRight;
+    let xRange = width - margins.right;
     if (yAxis.label) {
-      xRange = xRange - dimensions.marginLeft;
+      xRange = xRange - margins.left;
     }
 
     const xScale = d3
@@ -132,14 +131,9 @@ export class Line1 extends PureComponent<Props, State> {
         className={classNames("chart", className)}
       >
         <g className="chart__container">
-          <XAxis scales={scales} config={config} dimensions={dimensions} />
-          <YAxis scales={scales} config={config} dimensions={dimensions} />
-          <Line
-            data={data}
-            scales={scales}
-            config={config}
-            dimensions={dimensions}
-          />
+          <XAxis scales={scales} config={config} />
+          <YAxis scales={scales} config={config} />
+          <Line data={data} scales={scales} config={config} />
         </g>
       </svg>
     );

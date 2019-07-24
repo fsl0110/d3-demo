@@ -1,22 +1,17 @@
 import React, { FC } from "react";
 import ReactFauxDOM from "react-faux-dom";
 import * as d3 from "d3";
-import { LineChartConfig, Scales, Dimensions } from "./chart";
+import { LineChartConfig, Scales } from "./chart";
 
 export interface Props {
   scales: Scales;
   config: LineChartConfig;
-  dimensions: Dimensions;
 }
 
-export const XAxis: FC<Props> = ({ scales, config, dimensions }) => {
-  const create = (
-    scales: Scales,
-    config: LineChartConfig,
-    dimensions: Dimensions
-  ) => {
+export const XAxis: FC<Props> = ({ scales, config }) => {
+  const create = (scales: Scales, config: LineChartConfig) => {
     const el = ReactFauxDOM.createElement("g");
-    const { xAxis, yAxis } = config;
+    const { xAxis, yAxis, margins, dimensions } = config;
 
     // create axis
     const x_axis = d3
@@ -28,16 +23,15 @@ export const XAxis: FC<Props> = ({ scales, config, dimensions }) => {
       .tickFormat(xAxis.tickFormat || null);
 
     // define axis position
-    let axisXTranslate = dimensions.marginLeft + dimensions.marginRight;
+    let axisXTranslate = margins.left + margins.right;
     if (yAxis.label) {
-      axisXTranslate = axisXTranslate + dimensions.marginBottom;
+      axisXTranslate = axisXTranslate + margins.bottom;
     }
-    let axisYTranslate =
-      dimensions.height - dimensions.marginTop - dimensions.marginBottom;
+    let axisYTranslate = dimensions.height - margins.top - margins.bottom;
     if (xAxis.label) {
-      axisYTranslate = axisYTranslate - dimensions.marginBottom;
+      axisYTranslate = axisYTranslate - margins.bottom;
     }
-    const textYTranslate = dimensions.marginBottom + dimensions.marginBottom;
+    const textYTranslate = margins.bottom + margins.bottom;
     let textXTranslate = (dimensions.width - 40) / 2;
     let textAnchor = "end";
 
@@ -51,7 +45,7 @@ export const XAxis: FC<Props> = ({ scales, config, dimensions }) => {
           textAnchor = "start";
           break;
         case "right":
-          textXTranslate = dimensions.width - dimensions.marginRight * 4;
+          textXTranslate = dimensions.width - margins.right * 4;
           break;
         default:
           return null;
@@ -75,5 +69,5 @@ export const XAxis: FC<Props> = ({ scales, config, dimensions }) => {
     return el.toReact();
   };
 
-  return <>{create(scales, config, dimensions)}</>;
+  return <>{create(scales, config)}</>;
 };

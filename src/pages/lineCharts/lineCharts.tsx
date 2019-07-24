@@ -10,11 +10,6 @@ import {
 } from "../../components/charts/line/line1/chart";
 export type Data = [number, number][];
 
-const dimensions: Dimensions = {
-  width: 1200,
-  height: 300
-};
-
 const config = {
   className: "line1",
   dimensions: {
@@ -29,7 +24,7 @@ const config = {
   },
   xAxis: {
     className: "x-axis",
-    label: "Days since 2012"
+    label: "Time since 2012"
   },
   yAxis: {
     className: "y-axis",
@@ -91,7 +86,10 @@ export class LineCharts extends PureComponent<{}, State> {
         {data ? (
           <Line1 data={data} config={config} />
         ) : (
-          <Skeleton width={dimensions.width} height={dimensions.height} />
+          <Skeleton
+            width={config.dimensions.width}
+            height={config.dimensions.height}
+          />
         )}
       </div>
     );

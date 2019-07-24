@@ -23,26 +23,26 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
       .tickFormat(yAxis.tickFormat || null);
 
     // define axis position
-    let axis_x_translate = margins.left + margins.right;
+    let axisXTranslate = margins.left + margins.right;
     if (yAxis.label) {
-      axis_x_translate = axis_x_translate + margins.bottom;
+      axisXTranslate = axisXTranslate + margins.bottom;
     }
-    let axis_y_translate = margins.bottom;
-    let text_x_translate = margins.left + margins.left;
-    let text_y_translate = dimensions.height / 2;
-    let text_anchor = "start";
+    let axisYTranslate = margins.bottom;
+    let textXTranslate = margins.left + margins.left;
+    let textYTranslate = dimensions.height / 2;
+    let textAnchor = "start";
 
     if (yAxis.labelPosition) {
       switch (yAxis.labelPosition) {
         case "center":
-          text_y_translate = dimensions.height / 2;
+          textYTranslate = dimensions.height / 2;
           break;
         case "top":
-          text_y_translate = 0;
-          text_anchor = "end";
+          textYTranslate = 0;
+          textAnchor = "end";
           break;
         case "bottom":
-          text_y_translate = dimensions.height - margins.bottom * 4; // TODO: *2.5 does not make sense
+          textYTranslate = dimensions.height - margins.bottom * 4; // TODO: *2.5 does not make sense
           break;
         default:
           return null;
@@ -53,18 +53,18 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
     d3.select(el)
       .append("g")
       .attr("class", "chart__y-axis")
-      .attr("transform", `translate(${axis_x_translate}, ${axis_y_translate})`)
+      .attr("transform", `translate(${axisXTranslate}, ${axisYTranslate})`)
       .call(y_axis)
       .append("g")
       .append("text")
       .text(yAxis.label || "")
       .attr("class", "chart_y-label")
       .attr("fill", "black")
-      .attr("text-anchor", `${text_anchor}`)
+      .attr("text-anchor", `${textAnchor}`)
       .style("fontSize", "13px")
       .attr(
         "transform",
-        `translate(${-text_x_translate}, ${text_y_translate}) rotate(-90)`
+        `translate(${-textXTranslate}, ${textYTranslate}) rotate(-90)`
       );
 
     return el.toReact();

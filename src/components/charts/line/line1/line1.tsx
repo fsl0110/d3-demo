@@ -1,9 +1,10 @@
 import React, { PureComponent } from "react";
-import ReactFauxDOM from "react-faux-dom";
+import produce from "immer";
 import * as d3 from "d3";
 import classNames from "classnames";
 import { XAxis } from "./xAxis";
 import { YAxis } from "./yAxis";
+import { Line } from "./line";
 
 export interface Props {
   data: any;
@@ -37,7 +38,7 @@ export class Line1 extends PureComponent<Props, State> {
   readonly state: State = {
     data: [],
     config: {
-      className: "line1",
+      className: "",
       svgDimensions: {
         width: 600,
         height: 300
@@ -57,24 +58,44 @@ export class Line1 extends PureComponent<Props, State> {
     }
   };
 
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    if (prevState.data !== nextProps.data) {
+      return produce(prevState, (draft: State) => {
+        draft.data = nextProps.data;
+      });
+    }
+
+    if (prevState.config !== nextProps.config) {
+      return produce(prevState, (draft: State) => {
+        draft.config = nextProps.config;
+      });
+    }
+    return null;
+  }
+
   render() {
-    const { svgDimensions, margins, className } = this.state.config;
+    const { data, config } = this.state;
+    const { svgDimensions, margins, className } = config;
     /** Merge new width and height after viewport resize here */
     const width = svgDimensions.width - margins.left - margins.right;
     const height = svgDimensions.height - margins.top - margins.bottom;
 
+    const xScaleMinValue = Math.min(...data.map((d: any) => d[0]));
+    const xScaleMaxValue = Math.max(...data.map((d: any) => d[0]));
+    const yScaleMaxValue = Math.max(...data.map((d: any) => d[1]));
+
     const x_scale = d3
       .scaleTime()
-      .domain([new Date(2016, 0, 1), new Date(2017, 0, 1)])
+      .domain([xScaleMinValue, xScaleMaxValue])
       .range([0, width - margins.right]);
 
     const y_scale = d3
       .scaleLinear()
-      .domain([0, 200])
+      .domain([0, yScaleMaxValue])
       .range([height - margins.bottom, 0]);
 
     const scales = { x_scale, y_scale };
-
+    console.log(data);
     return (
       <svg
         width={svgDimensions.width}
@@ -82,8 +103,9 @@ export class Line1 extends PureComponent<Props, State> {
         className={classNames("chart", className)}
       >
         <g className="chart__container">
-          <XAxis scales={scales} config={this.state.config} />
-          <YAxis scales={scales} config={this.state.config} />
+          <XAxis scales={scales} config={config} />
+          <YAxis scales={scales} config={config} />
+          <Line data={data} scales={scales} />
         </g>
       </svg>
     );

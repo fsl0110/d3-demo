@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import ReactFauxDOM from "react-faux-dom";
 import * as d3 from "d3";
-import moment from "moment";
 
 export interface Props {
   scales: any;
@@ -14,8 +13,8 @@ export const Line: FC<Props> = ({ data, scales }) => {
     // generate line
     const lineGenerator = d3
       .line()
-      .x((d: any) => scales.x_scale(d.time))
-      .y((d: any) => scales.y_scale(d.count))
+      .x((d: any) => scales.x_scale(d[0]))
+      .y((d: any) => scales.y_scale(d[1]))
       .curve(d3.curveMonotoneX);
 
     // append line to d attribute of path element
@@ -23,9 +22,9 @@ export const Line: FC<Props> = ({ data, scales }) => {
       .attr("class", "line-path")
       .data([data])
       .attr("fill", "none")
-      .attr("stroke", "grey")
-      .attr("stroke-width", "3px")
-      .attr("d", lineGenerator);
+      .attr("stroke", "aqua")
+      .attr("d", lineGenerator)
+      .attr("transform", `translate(${42}, ${20})`);
 
     return el.toReact();
   };

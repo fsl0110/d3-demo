@@ -1,13 +1,14 @@
 import React, { PureComponent, createRef } from "react";
-import Axios, { AxiosResponse } from "axios";
+import { AxiosResponse, AxiosError } from "axios";
 import Skeleton from "react-loading-skeleton";
+import { axiosOpenFDA, openFDA } from "../../utils/api/openFDA";
 import { Line1 } from "../../components";
 
 const config = {
   className: "line1",
   svgDimensions: {
-    width: 600,
-    height: 300
+    width: 1200,
+    height: 600
   },
   margins: {
     top: 20,
@@ -39,11 +40,13 @@ export class LineCharts extends PureComponent<{}, State> {
 
   componentDidMount() {
     const term = "";
-    Axios.get(
-      `https://api.fda.gov/food/enforcement.json?search=reason_for_recall:"${term}"&count=report_date`
-    ).then((res: AxiosResponse) => {
-      this.setState({ data: res.data.results });
-    });
+    axiosOpenFDA(openFDA.foodEnforcementReports(term))
+      .then((res: AxiosResponse) => {
+        console.log(res.data);
+        this.setState({ data: res.data });
+      })
+      .catch((err: AxiosError) => null);
+
     const dimensions = this.ref.current.getBoundingClientRect();
     if (dimensions.width !== this.state.width) {
       this.updateDimensions();

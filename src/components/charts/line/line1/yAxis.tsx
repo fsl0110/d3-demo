@@ -14,10 +14,23 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
     const y_axis = d3.axisLeft(scales.y_scale).scale(scales.y_scale);
 
     // define axis position
-    const { margins, svgDimensions, yAxis } = config;
-    const axis_x_translate = margins.left + margins.right;
-    const axis_y_translate = margins.bottom;
-    const text_x_translate = margins.left;
+    const { margins, svgDimensions, yAxis, xAxis } = config;
+
+    // 1. if label than translate y - margin-top
+    // 2. if label than translate x
+    console.log("margins.bottom", margins.bottom);
+
+    let axis_x_translate = margins.left + margins.right;
+    if (yAxis.label) {
+      axis_x_translate = axis_x_translate + margins.bottom;
+    }
+
+    let axis_y_translate = margins.bottom;
+    if (xAxis.label) {
+      /* axis_y_translate = axis_y_translate; */
+    }
+
+    let text_x_translate = margins.left + margins.left;
     let text_y_translate = svgDimensions.height / 2;
     let text_anchor = "start";
 
@@ -30,7 +43,7 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
         text_anchor = "end";
         break;
       case "bottom":
-        text_y_translate = svgDimensions.height - margins.bottom * 2.5;
+        text_y_translate = svgDimensions.height - margins.bottom * 2.5; // TODO: *2.5 does not make sense
 
         break;
       default:

@@ -26,10 +26,14 @@ export interface State {
       right: number;
     };
     xAxis: {
-      className: string;
+      className?: string;
+      label?: string;
+      labelPosition?: "left" | "center" | "right";
     };
     yAxis: {
-      className: string;
+      className?: string;
+      label?: string;
+      labelPosition?: "top" | "center" | "bottom";
     };
   };
 }
@@ -49,12 +53,8 @@ export class Line1 extends PureComponent<Props, State> {
         bottom: 20,
         right: 20
       },
-      xAxis: {
-        className: "x-axis"
-      },
-      yAxis: {
-        className: "y-axis"
-      }
+      xAxis: {},
+      yAxis: {}
     }
   };
 
@@ -75,7 +75,7 @@ export class Line1 extends PureComponent<Props, State> {
 
   render() {
     const { data, config } = this.state;
-    const { svgDimensions, margins, className } = config;
+    const { svgDimensions, margins, xAxis, yAxis, className } = config;
     /** Merge new width and height after viewport resize here */
     const width = svgDimensions.width - margins.left - margins.right;
     const height = svgDimensions.height - margins.top - margins.bottom;
@@ -83,19 +83,32 @@ export class Line1 extends PureComponent<Props, State> {
     const xScaleMinValue = Math.min(...data.map((d: any) => d[0]));
     const xScaleMaxValue = Math.max(...data.map((d: any) => d[0]));
     const yScaleMaxValue = Math.max(...data.map((d: any) => d[1]));
+    let y_range = height - margins.bottom;
+    let x_range = width - margins.right;
+
+    if (xAxis.label) {
+      /*       x_range = x_range - margins.left; */
+      y_range = y_range - margins.left;
+    }
+
+    if (yAxis.label) {
+      /*   y_range = y_range; */
+      x_range = x_range - margins.left;
+    }
 
     const x_scale = d3
       .scaleTime()
       .domain([xScaleMinValue, xScaleMaxValue])
-      .range([0, width - margins.right]);
+      .range([0, x_range]);
 
     const y_scale = d3
       .scaleLinear()
       .domain([0, yScaleMaxValue])
-      .range([height - margins.bottom, 0]);
+      .range([y_range, 0]);
 
     const scales = { x_scale, y_scale };
     console.log(data);
+
     return (
       <svg
         width={svgDimensions.width}

@@ -15,11 +15,19 @@ export const XAxis: FC<Props> = ({ scales, config }) => {
     const x_axis = d3.axisBottom(scales.x_scale).scale(scales.x_scale);
 
     // define axis position
-    const { svgDimensions, margins, xAxis } = config;
-    const axis_x_translate = margins.left + margins.right;
-    const axis_y_translate =
-      svgDimensions.height - margins.top - margins.bottom;
-    const text_y_translate = margins.bottom;
+    const { svgDimensions, margins, xAxis, yAxis } = config;
+
+    let axis_x_translate = margins.left + margins.right;
+    if (yAxis.label) {
+      axis_x_translate = axis_x_translate + margins.bottom;
+    }
+
+    let axis_y_translate = svgDimensions.height - margins.top - margins.bottom;
+    if (xAxis.label) {
+      axis_y_translate = axis_y_translate - margins.bottom;
+    }
+
+    const text_y_translate = margins.bottom + margins.bottom;
     let text_x_translate = (svgDimensions.width - 40) / 2;
     let text_anchor = "end";
 
@@ -32,7 +40,7 @@ export const XAxis: FC<Props> = ({ scales, config }) => {
         text_anchor = "start";
         break;
       case "right":
-        text_x_translate = svgDimensions.width - margins.left * 2;
+        text_x_translate = svgDimensions.width - margins.left * 2; // TODO: * 2 does not make sense
         break;
       default:
         return null;
@@ -45,7 +53,7 @@ export const XAxis: FC<Props> = ({ scales, config }) => {
       .attr("transform", `translate(${axis_x_translate}, ${axis_y_translate})`)
       .call(x_axis)
       .append("text")
-      .text(`${xAxis.label}`)
+      .text(xAxis.label || "")
       .attr("class", "chart_y-label")
       .attr("fill", "black")
       .attr("text-anchor", `${text_anchor}`)

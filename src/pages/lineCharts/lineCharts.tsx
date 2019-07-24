@@ -12,14 +12,14 @@ const config = {
   },
   margins: {
     top: 20,
-    left: 40,
-    bottom: 40,
+    left: 20,
+    bottom: 20,
     right: 20
   },
   xAxis: {
     className: "x-axis",
     label: "Time",
-    labelPosition: "left"
+    labelPosition: "center"
   },
   yAxis: {
     className: "y-axis",

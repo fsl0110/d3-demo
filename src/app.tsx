@@ -6,7 +6,7 @@ import {
   Redirect
 } from "react-router-dom";
 import { Page, Header } from "./components";
-import { Home, BarCharts, TimelineCharts } from "./pages";
+import { Home, BarCharts, LineCharts } from "./pages";
 
 export const App: FC = () => (
   <Router>
@@ -14,8 +14,8 @@ export const App: FC = () => (
     <Page>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/barcharts" component={BarCharts} />
-        <Route path="/timelinecharts" component={TimelineCharts} />
+        {/*     <Route path="/barcharts" component={BarCharts} /> */}
+        <Route path="/linecharts" component={LineCharts} />
         <Route path="*" render={() => <Redirect to="/" />} />
       </Switch>
     </Page>

@@ -16,7 +16,7 @@ export const Header: FC<Props> = () => {
         <NavLink to="/barcharts" className="link">
           BarCharts
         </NavLink>
-        <NavLink to="/timelinecharts" className="link">
+        <NavLink to="/linecharts" className="link">
           TimelineCharts
         </NavLink>
       </nav>

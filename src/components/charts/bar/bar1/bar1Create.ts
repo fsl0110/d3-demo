@@ -2,49 +2,55 @@ import ReactFauxDOM from "react-faux-dom";
 import * as d3 from "d3";
 
 export const createChart = (
-  data: { time: string; population: number }[],
+  data: any,
+
   width: number,
   height: number,
   animate?: any
 ) => {
   const el = ReactFauxDOM.createElement("svg");
-  const mockData = [
+  const data2 = [
     {
-      time: "1980-01-01",
-      population: 10
+      y: "red",
+      x: 10
     },
     {
-      time: "1990-01-01",
-      population: 20
+      y: "blue",
+      x: 20
     },
     {
-      time: "2000-01-01",
-      population: 30
+      y: "green",
+      x: 30
     }
   ];
 
   const x = d3
-    .pie()
-    .sort(null)
-    .value((d: any) => d.population);
+    .scaleLinear()
+    .range([0, 500])
+    .domain([0, 40]);
 
-  const path = d3
-    .arc()
-    .outerRadius(150)
-    .innerRadius(0);
+  const xAxisGenerator = d3.axisBottom(x).scale(x);
 
   const svg = d3
     .select(el)
     .append("g")
     .attr("transform", "translate(50,0)");
-  const arc = svg
-    .selectAll(".arc")
-    .data(pie(mockData))
-    .enter()
-    .append("g")
-    .attr("class", "arc");
 
-  arc.append("path").attr("d", path);
+  svg
+    .append("g")
+    .call(xAxisGenerator)
+    .attr("transform", "translate(0,100)");
+
+  svg
+    .selectAll("rect")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("x", x(0))
+    .attr("y", (d, i) => (i + 1) * 25)
+    .attr("width", (d: any, i) => x(d.count / 400))
+    .attr("height", "20")
+    .style("fill", "aqua");
 
   return el.toReact();
 };

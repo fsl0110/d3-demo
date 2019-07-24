@@ -1,7 +1,27 @@
 import React, { PureComponent, createRef } from "react";
 import Axios, { AxiosResponse } from "axios";
 import Skeleton from "react-loading-skeleton";
-import { Timeline1 } from "../../components";
+import { Line1 } from "../../components";
+
+const config = {
+  className: "line1",
+  svgDimensions: {
+    width: 600,
+    height: 300
+  },
+  margins: {
+    top: 20,
+    left: 20,
+    bottom: 20,
+    right: 20
+  },
+  xAxis: {
+    className: "x-axis"
+  },
+  yAxis: {
+    className: "y-axis"
+  }
+};
 
 export interface State {
   data: { artist: string; color: string; startDate: Date; endDate: Date }[];
@@ -9,7 +29,7 @@ export interface State {
   height: number;
 }
 
-export class TimelineCharts extends PureComponent<{}, State> {
+export class LineCharts extends PureComponent<{}, State> {
   private ref: any = createRef<HTMLDivElement>();
   readonly state: State = {
     data: [],
@@ -18,18 +38,18 @@ export class TimelineCharts extends PureComponent<{}, State> {
   };
 
   componentDidMount() {
+    const term = "";
+    Axios.get(
+      `https://api.fda.gov/food/enforcement.json?search=reason_for_recall:"${term}"&count=report_date`
+    ).then((res: AxiosResponse) => {
+      this.setState({ data: res.data.results });
+    });
     const dimensions = this.ref.current.getBoundingClientRect();
     if (dimensions.width !== this.state.width) {
       this.updateDimensions();
     }
 
     window.addEventListener("resize", this.updateDimensions);
-
-    /*     Axios.get(
-      `https://api.fda.gov/food/enforcement.json?count=voluntary_mandated.exact`
-    ).then((res: AxiosResponse) => {
-      this.setState({ data: res.data.results });
-    }); */
   }
 
   updateDimensions = () => {
@@ -47,31 +67,10 @@ export class TimelineCharts extends PureComponent<{}, State> {
   render() {
     const { data, width, height } = this.state;
 
-    const mockData = [
-      {
-        artist: "W. A. Mozart",
-        color: "pink",
-        startDate: new Date(1756, 0, 27),
-        endDate: new Date(1791, 11, 5)
-      },
-      {
-        artist: "J. Haydn",
-        color: "violet",
-        startDate: new Date(1841, 8, 8),
-        endDate: new Date(1904, 4, 1)
-      },
-      {
-        artist: "A. Vivaldi",
-        color: "red",
-        startDate: new Date(1678, 2, 4),
-        endDate: new Date(1741, 6, 28)
-      }
-    ];
-
     return (
-      <div className="barchart" ref={this.ref}>
+      <div className="linechart" ref={this.ref}>
         {data ? (
-          <Timeline1 data={mockData} width={width} height={height} />
+          <Line1 data={data} config={config} />
         ) : (
           <Skeleton width={width} height={height} />
         )}

@@ -1,0 +1,141 @@
+import React, { PureComponent } from "react";
+import produce from "immer";
+import * as d3 from "d3";
+import { XAxis } from "./xAxis";
+import { YAxis } from "./yAxis";
+import { Line } from "./line";
+
+export interface ChartConfig {
+  chartClass?: string;
+  svgDimensions: {
+    width: number;
+    height: number;
+  };
+  margins: {
+    top: number;
+    left: number;
+    bottom: number;
+    right: number;
+  };
+  xAxis: {
+    orient?: any;
+    label?: string;
+    ticks?: number;
+    tickSize: number;
+    padding?: number;
+    format?: any;
+    class?: string;
+    translate?: [number, number];
+  };
+  yAxis: {
+    orient?: any;
+    label?: string;
+    ticks?: number;
+    tickSize: number;
+    padding?: number;
+    format?: any;
+    class?: string;
+    translate?: [number, number];
+  };
+}
+
+const defaultConfig = {
+  svgDimensions: {
+    width: 350,
+    height: 150
+  },
+  margins: {
+    top: 20,
+    left: 20,
+    bottom: 20,
+    right: 20
+  },
+  xAxis: {
+    orient: "Bottom",
+    tickSize: 0,
+    class: "x-axis"
+  },
+  yAxis: {
+    orient: "Left",
+    tickSize: 0,
+    class: "y-axis"
+  }
+};
+
+export interface Props {
+  data: any;
+  config: ChartConfig;
+}
+
+export interface State {
+  data: { color: string; rating: string }[];
+  config: ChartConfig;
+}
+
+export class Line1 extends PureComponent<Props, State> {
+  readonly state: State = {
+    data: [],
+    config: defaultConfig
+  };
+
+  static defaultProps: Partial<Props> = {
+    config: defaultConfig
+  };
+
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    if (prevState.data !== nextProps.data) {
+      return produce(prevState, (draft: State) => {
+        draft.data = nextProps.data;
+      });
+    }
+
+    if (prevState.config !== nextProps.config) {
+      return produce(prevState, (draft: State) => {
+        draft.config = nextProps.config;
+      });
+    }
+
+    return null;
+  }
+
+  render() {
+    const { data, config } = this.state;
+    const { margins, svgDimensions } = config;
+
+    const xScaleMinValue = Math.min(...data.map((d: any) => d.time));
+    const xScaleMaxValue = Math.max(...data.map((d: any) => d.time));
+    const yScaleMaxValue = Math.max(...data.map((d: any) => d.count));
+
+    console.log("xScaleMinValue", xScaleMinValue);
+    console.log("xScaleMaxValue", xScaleMaxValue);
+    console.log("yScaleMaxValue", yScaleMaxValue);
+
+    const x = d3
+      .scaleLinear()
+      .domain([xScaleMinValue, xScaleMaxValue])
+      .range([margins.left, svgDimensions.width - margins.right])
+      .clamp(true);
+
+    const y = d3
+      .scaleLinear()
+      .domain([0, yScaleMaxValue])
+      .range([svgDimensions.height - margins.top, margins.bottom])
+      .clamp(true);
+
+    const scales = { x, y };
+
+    return (
+      <svg
+        className={config.chartClass}
+        width={config.svgDimensions.width}
+        height={config.svgDimensions.height}
+      >
+        <g>
+          <YAxis config={config} scales={scales} />
+          <XAxis config={config} scales={scales} />
+          <Line data={data} scales={scales} />
+        </g>
+      </svg>
+    );
+  }
+}

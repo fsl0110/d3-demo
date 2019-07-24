@@ -1,47 +1,57 @@
 import React, { FC } from "react";
 import ReactFauxDOM from "react-faux-dom";
 import * as d3 from "d3";
-import { LineChartConfig, Scales } from "./chart";
+import { LineChartConfig, Scales, Dimensions } from "./chart";
 
 export interface Props {
   scales: Scales;
   config: LineChartConfig;
+  dimensions: Dimensions;
 }
 
-export const XAxis: FC<Props> = ({ scales, config }) => {
-  const create = (scales: Scales, config: LineChartConfig) => {
+export const XAxis: FC<Props> = ({ scales, config, dimensions }) => {
+  const create = (
+    scales: Scales,
+    config: LineChartConfig,
+    dimensions: Dimensions
+  ) => {
     const el = ReactFauxDOM.createElement("g");
-    const { svgDimensions, margins, xAxis, yAxis } = config;
+    const { xAxis, yAxis } = config;
 
     // create axis
-    const x_axis = d3.axisBottom(scales.x_scale).scale(scales.x_scale);
+    const x_axis = d3
+      .axisBottom(scales.xScale)
+      .scale(scales.xScale)
+      .tickSize(xAxis.tickSize || 5)
+      .tickPadding(xAxis.tickPadding || 5)
+      .ticks(xAxis.ticks || 10) // TODO: compute default ticks from the height of the chart
+      .tickFormat(xAxis.tickFormat || null);
 
     // define axis position
-    let axis_x_translate = margins.left + margins.right;
+    let axisXTranslate = dimensions.marginLeft + dimensions.marginRight;
     if (yAxis.label) {
-      axis_x_translate = axis_x_translate + margins.bottom;
+      axisXTranslate = axisXTranslate + dimensions.marginBottom;
     }
-
-    let axis_y_translate = svgDimensions.height - margins.top - margins.bottom;
+    let axisYTranslate =
+      dimensions.height - dimensions.marginTop - dimensions.marginBottom;
     if (xAxis.label) {
-      axis_y_translate = axis_y_translate - margins.bottom;
+      axisYTranslate = axisYTranslate - dimensions.marginBottom;
     }
-
-    const text_y_translate = margins.bottom + margins.bottom;
-    let text_x_translate = (svgDimensions.width - 40) / 2;
-    let text_anchor = "end";
+    const textYTranslate = dimensions.marginBottom + dimensions.marginBottom;
+    let textXTranslate = (dimensions.width - 40) / 2;
+    let textAnchor = "end";
 
     if (xAxis.labelPosition) {
       switch (xAxis.labelPosition) {
         case "center":
-          text_x_translate = (svgDimensions.width - 40) / 2;
+          textXTranslate = (dimensions.width - 40) / 2;
           break;
         case "left":
-          text_x_translate = 0;
-          text_anchor = "start";
+          textXTranslate = 0;
+          textAnchor = "start";
           break;
         case "right":
-          text_x_translate = svgDimensions.width - margins.right * 4;
+          textXTranslate = dimensions.width - dimensions.marginRight * 4;
           break;
         default:
           return null;
@@ -51,19 +61,19 @@ export const XAxis: FC<Props> = ({ scales, config }) => {
     // add axis via call into a g element
     d3.select(el)
       .append("g")
-      .attr("class", "y-axis")
-      .attr("transform", `translate(${axis_x_translate}, ${axis_y_translate})`)
+      .attr("class", "chart__y-axis")
+      .attr("transform", `translate(${axisXTranslate}, ${axisYTranslate})`)
       .call(x_axis)
       .append("text")
       .text(xAxis.label || "")
       .attr("class", "chart_y-label")
       .attr("fill", "black")
-      .attr("text-anchor", `${text_anchor}`)
-      .attr("transform", `translate(${text_x_translate}, ${text_y_translate})`)
+      .attr("text-anchor", `${textAnchor}`)
+      .attr("transform", `translate(${textXTranslate}, ${textYTranslate})`)
       .style("fontSize", "13px");
 
     return el.toReact();
   };
 
-  return <>{create(scales, config)}</>;
+  return <>{create(scales, config, dimensions)}</>;
 };

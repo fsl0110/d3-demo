@@ -10,28 +10,30 @@ import { Line } from "./line";
 export type Data = [number, number][];
 
 export interface Scales {
-  y_scale: ScaleLinear<number, number>;
-  x_scale: ScaleTime<number, number>;
+  yScale: ScaleLinear<number, number>;
+  xScale: ScaleTime<number, number>;
+}
+
+export interface Dimensions {
+  height: number;
+  width: number;
+  marginTop: number;
+  marginLeft: number;
+  marginBottom: number;
+  marginRight: number;
 }
 
 export interface LineChartConfig {
-  className: string;
-  svgDimensions: {
-    height: number;
-    width: number;
-  };
-  margins: {
-    top: number;
-    left: number;
-    bottom: number;
-    right: number;
-  };
+  className?: string;
+  dimensions: Dimensions;
   xAxis: {
     className?: string;
     label?: string;
     labelPosition?: "left" | "center" | "right";
     ticks?: number;
     tickSize?: number;
+    tickPadding?: number;
+    tickFormat?: any;
   };
   yAxis: {
     className?: string;
@@ -39,42 +41,47 @@ export interface LineChartConfig {
     labelPosition?: "top" | "center" | "bottom";
     ticks?: number;
     tickSize?: number;
+    tickPadding?: number;
+    tickFormat?: any;
+  };
+  line?: {
+    color?: string;
+    // http://bl.ocks.org/d3indepth/b6d4845973089bc1012dec1674d3aff8
+    type?: "line" | "curve" | "step"; // line = d3.curvelinear, spline = d3.curveMonotoneX, step ? d3.curveStep
+    width?: string;
+    dashStyle?: "dashed" | "dotted";
   };
 }
+
 export interface Props {
-  data: any;
-  config: any;
+  data: [number, number][];
+  dimensions: Dimensions;
+  config: LineChartConfig;
 }
 
 export interface State {
-  data: any;
+  data: [number, number][];
+  dimensions: Dimensions;
   config: LineChartConfig;
 }
 
 export class Line1 extends PureComponent<Props, State> {
   readonly state: State = {
     data: [],
-    config: {
-      className: "",
-      svgDimensions: {
-        width: 600,
-        height: 300
-      },
-      margins: {
-        top: 20,
-        left: 20,
-        bottom: 20,
-        right: 20
-      },
-      xAxis: {},
-      yAxis: {}
-    }
+    dimensions: this.props.dimensions,
+    config: this.props.config
   };
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     if (prevState.data !== nextProps.data) {
       return produce(prevState, (draft: State) => {
         draft.data = nextProps.data;
+      });
+    }
+
+    if (prevState.dimensions !== nextProps.dimensions) {
+      return produce(prevState, (draft: State) => {
+        draft.dimensions = nextProps.dimensions;
       });
     }
 
@@ -87,45 +94,52 @@ export class Line1 extends PureComponent<Props, State> {
   }
 
   render() {
-    const { data, config } = this.state;
-    const { svgDimensions, margins, xAxis, yAxis, className } = config;
+    const { data, dimensions, config } = this.state;
+    const { xAxis, yAxis, className } = config;
     /** Merge new width and height after viewport resize here */
-    const width = svgDimensions.width - margins.left - margins.right;
-    const height = svgDimensions.height - margins.top - margins.bottom;
+    const width =
+      dimensions.width - dimensions.marginLeft - dimensions.marginRight;
+    const height =
+      dimensions.height - dimensions.marginTop - dimensions.marginBottom;
     const xScaleMinValue = Math.min(...data.map((d: any) => d[0]));
     const xScaleMaxValue = Math.max(...data.map((d: any) => d[0]));
     const yScaleMaxValue = Math.max(...data.map((d: any) => d[1]));
-    let y_range = height - margins.bottom;
+    let yRange = height - dimensions.marginBottom;
     if (xAxis.label) {
-      y_range = y_range - margins.left;
+      yRange = yRange - dimensions.marginLeft;
     }
-    let x_range = width - margins.right;
+    let xRange = width - dimensions.marginRight;
     if (yAxis.label) {
-      x_range = x_range - margins.left;
+      xRange = xRange - dimensions.marginLeft;
     }
 
-    const x_scale = d3
+    const xScale = d3
       .scaleTime()
       .domain([xScaleMinValue, xScaleMaxValue])
-      .range([0, x_range]);
+      .range([0, xRange]);
 
-    const y_scale = d3
+    const yScale = d3
       .scaleLinear()
       .domain([0, yScaleMaxValue])
-      .range([y_range, 0]);
+      .range([yRange, 0]);
 
-    const scales = { x_scale, y_scale };
-
+    const scales = { xScale, yScale };
+    console.log("resize width", width);
     return (
       <svg
-        width={svgDimensions.width}
-        height={svgDimensions.height}
+        width={dimensions.width}
+        height={dimensions.height}
         className={classNames("chart", className)}
       >
         <g className="chart__container">
-          <XAxis scales={scales} config={config} />
-          <YAxis scales={scales} config={config} />
-          <Line data={data} scales={scales} config={config} />
+          <XAxis scales={scales} config={config} dimensions={dimensions} />
+          <YAxis scales={scales} config={config} dimensions={dimensions} />
+          <Line
+            data={data}
+            scales={scales}
+            config={config}
+            dimensions={dimensions}
+          />
         </g>
       </svg>
     );

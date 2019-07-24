@@ -1,34 +1,44 @@
 import React, { FC } from "react";
 import ReactFauxDOM from "react-faux-dom";
 import * as d3 from "d3";
-import { LineChartConfig, Data, Scales } from "./chart";
+import { LineChartConfig, Data, Scales, Dimensions } from "./chart";
 
 export interface Props {
   scales: Scales;
   data: Data;
   config: LineChartConfig;
+  dimensions: Dimensions;
 }
-export const Line: FC<Props> = ({ data, scales, config }) => {
-  const createChart = (scales: Scales, data: Data, config: LineChartConfig) => {
+export const Line: FC<Props> = ({ data, scales, config, dimensions }) => {
+  const createChart = (
+    scales: Scales,
+    data: Data,
+    config: LineChartConfig,
+    dimensions: Dimensions
+  ) => {
     const el = ReactFauxDOM.createElement("path");
 
     // generate line
     const lineGenerator = d3
       .line()
-      .x((d: any) => scales.x_scale(d[0]))
-      .y((d: any) => scales.y_scale(d[1]))
+      .x((d: any) => scales.xScale(d[0]))
+      .y((d: any) => scales.yScale(d[1]))
       .curve(d3.curveMonotoneX);
 
     // define line position
-    const { margins, yAxis } = config;
+    const { yAxis } = config;
 
-    let x_translate = margins.left + margins.right + 2; // add two against overlapping
+    let x_translate = dimensions.marginLeft + dimensions.marginRight + 2; // add two against overlapping
 
     if (yAxis.label) {
-      x_translate = margins.left + margins.right + margins.right + 2; // add two against overlapping
+      x_translate =
+        dimensions.marginLeft +
+        dimensions.marginRight +
+        dimensions.marginRight +
+        2; // add two against overlapping
     }
 
-    const y_translate = margins.top;
+    const y_translate = dimensions.marginTop;
 
     // add line to the d attribute of the path element
     d3.select(el)
@@ -42,5 +52,5 @@ export const Line: FC<Props> = ({ data, scales, config }) => {
     return el.toReact();
   };
 
-  return <>{createChart(scales, data, config)}</>;
+  return <>{createChart(scales, data, config, dimensions)}</>;
 };

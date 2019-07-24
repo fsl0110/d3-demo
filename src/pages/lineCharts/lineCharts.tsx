@@ -12,15 +12,19 @@ const config = {
   },
   margins: {
     top: 20,
-    left: 20,
-    bottom: 20,
+    left: 40,
+    bottom: 40,
     right: 20
   },
   xAxis: {
-    className: "x-axis"
+    className: "x-axis",
+    label: "Time",
+    labelPosition: "left"
   },
   yAxis: {
-    className: "y-axis"
+    className: "y-axis",
+    label: "Amount of Reports",
+    labelPosition: "top"
   }
 };
 

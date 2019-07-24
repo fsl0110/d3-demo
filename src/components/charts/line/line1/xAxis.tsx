@@ -15,15 +15,42 @@ export const XAxis: FC<Props> = ({ scales, config }) => {
     const x_axis = d3.axisBottom(scales.x_scale).scale(scales.x_scale);
 
     // define axis position
-    const { svgDimensions, margins } = config;
-    const x_translate = margins.left + margins.right;
-    const y_translate = svgDimensions.height - margins.top - margins.bottom;
+    const { svgDimensions, margins, xAxis } = config;
+    const axis_x_translate = margins.left + margins.right;
+    const axis_y_translate =
+      svgDimensions.height - margins.top - margins.bottom;
+    const text_y_translate = margins.bottom;
+    let text_x_translate = (svgDimensions.width - 40) / 2;
+    let text_anchor = "end";
 
-    // append axis via call into a g element
+    switch (xAxis.labelPosition) {
+      case "center":
+        text_x_translate = (svgDimensions.width - 40) / 2;
+        break;
+      case "left":
+        text_x_translate = 0;
+        text_anchor = "start";
+        break;
+      case "right":
+        text_x_translate = svgDimensions.width - margins.left * 2;
+        break;
+      default:
+        return null;
+    }
+
+    // add axis via call into a g element
     d3.select(el)
       .append("g")
-      .attr("transform", `translate(${x_translate}, ${y_translate})`)
-      .call(x_axis);
+      .attr("class", "y-axis")
+      .attr("transform", `translate(${axis_x_translate}, ${axis_y_translate})`)
+      .call(x_axis)
+      .append("text")
+      .text(`${xAxis.label}`)
+      .attr("class", "chart_y-label")
+      .attr("fill", "black")
+      .attr("text-anchor", `${text_anchor}`)
+      .attr("transform", `translate(${text_x_translate}, ${text_y_translate})`)
+      .style("fontSize", "13px");
 
     return el.toReact();
   };

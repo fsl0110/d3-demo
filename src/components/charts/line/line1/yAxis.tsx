@@ -14,15 +14,46 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
     const y_axis = d3.axisLeft(scales.y_scale).scale(scales.y_scale);
 
     // define axis position
-    const { margins } = config;
-    const x_translate = margins.left + margins.right;
-    const y_translate = margins.top;
+    const { margins, svgDimensions, yAxis } = config;
+    const axis_x_translate = margins.left + margins.right;
+    const axis_y_translate = margins.bottom;
+    const text_x_translate = margins.left;
+    let text_y_translate = svgDimensions.height / 2;
+    let text_anchor = "start";
 
-    // append axis via call into a g element
+    switch (yAxis.labelPosition) {
+      case "center":
+        text_y_translate = svgDimensions.height / 2;
+        break;
+      case "top":
+        text_y_translate = 0;
+        text_anchor = "end";
+        break;
+      case "bottom":
+        text_y_translate = svgDimensions.height - margins.bottom * 2.5;
+
+        break;
+      default:
+        return null;
+    }
+
+    // add axis via call into a g element
     d3.select(el)
       .append("g")
-      .attr("transform", `translate(${x_translate}, ${y_translate})`)
-      .call(y_axis);
+      .attr("class", "y-axis")
+      .attr("transform", `translate(${axis_x_translate}, ${axis_y_translate})`)
+      .call(y_axis)
+      .append("g")
+      .append("text")
+      .text(yAxis.label || "")
+      .attr("class", "chart_y-label")
+      .attr("fill", "black")
+      .attr("text-anchor", `${text_anchor}`)
+      .style("fontSize", "13px")
+      .attr(
+        "transform",
+        `translate(${-text_x_translate}, ${text_y_translate}) rotate(-90)`
+      );
 
     return el.toReact();
   };

@@ -5,9 +5,10 @@ import * as d3 from "d3";
 export interface Props {
   scales: any;
   data: any;
+  config: any;
 }
-export const Line: FC<Props> = ({ data, scales }) => {
-  const createChart = (data: any, scales: any) => {
+export const Line: FC<Props> = ({ data, scales, config }) => {
+  const createChart = (scales: any, data: any, config: any) => {
     const el = ReactFauxDOM.createElement("path");
 
     // generate line
@@ -17,17 +18,22 @@ export const Line: FC<Props> = ({ data, scales }) => {
       .y((d: any) => scales.y_scale(d[1]))
       .curve(d3.curveMonotoneX);
 
-    // append line to d attribute of path element
+    // define line position
+    const { margins } = config;
+    const x_translate = margins.left + margins.right + 2; // add two against overlapping
+    const y_translate = margins.top;
+
+    // add line to the d attribute of the path element
     d3.select(el)
       .attr("class", "line-path")
       .data([data])
       .attr("fill", "none")
       .attr("stroke", "aqua")
       .attr("d", lineGenerator)
-      .attr("transform", `translate(${42}, ${20})`);
+      .attr("transform", `translate(${x_translate}, ${y_translate})`);
 
     return el.toReact();
   };
 
-  return <>{createChart(data, scales)}</>;
+  return <>{createChart(scales, data, config)}</>;
 };

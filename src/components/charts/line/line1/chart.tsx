@@ -105,7 +105,7 @@ export class Line1 extends PureComponent<Props, State> {
         <g className="chart__container">
           <XAxis scales={scales} config={config} />
           <YAxis scales={scales} config={config} />
-          <Line data={data} scales={scales} />
+          <Line data={data} scales={scales} config={config} />
         </g>
       </svg>
     );

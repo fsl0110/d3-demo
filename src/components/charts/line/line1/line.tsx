@@ -19,8 +19,14 @@ export const Line: FC<Props> = ({ data, scales, config }) => {
       .curve(d3.curveMonotoneX);
 
     // define line position
-    const { margins } = config;
-    const x_translate = margins.left + margins.right + 2; // add two against overlapping
+    const { margins, yAxis } = config;
+
+    let x_translate = margins.left + margins.right + 2; // add two against overlapping
+
+    if (yAxis.label) {
+      x_translate = margins.left + margins.right + margins.right + 2; // add two against overlapping
+    }
+
     const y_translate = margins.top;
 
     // add line to the d attribute of the path element

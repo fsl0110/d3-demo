@@ -40,7 +40,7 @@ export const XAxis: FC<Props> = ({ scales, config }) => {
         text_anchor = "start";
         break;
       case "right":
-        text_x_translate = svgDimensions.width - margins.left * 2; // TODO: * 2 does not make sense
+        text_x_translate = svgDimensions.width - margins.right * 4;
         break;
       default:
         return null;

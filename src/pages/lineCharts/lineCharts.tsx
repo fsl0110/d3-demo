@@ -19,12 +19,12 @@ const config = {
   xAxis: {
     className: "x-axis",
     label: "Time",
-    labelPosition: "center"
+    labelPosition: "right"
   },
   yAxis: {
     className: "y-axis",
     label: "Amount of Reports",
-    labelPosition: "top"
+    labelPosition: "bottom"
   }
 };
 

@@ -26,9 +26,6 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
     }
 
     let axis_y_translate = margins.bottom;
-    if (xAxis.label) {
-      /* axis_y_translate = axis_y_translate; */
-    }
 
     let text_x_translate = margins.left + margins.left;
     let text_y_translate = svgDimensions.height / 2;
@@ -43,7 +40,7 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
         text_anchor = "end";
         break;
       case "bottom":
-        text_y_translate = svgDimensions.height - margins.bottom * 2.5; // TODO: *2.5 does not make sense
+        text_y_translate = svgDimensions.height - margins.bottom * 4; // TODO: *2.5 does not make sense
 
         break;
       default:

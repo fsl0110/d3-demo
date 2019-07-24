@@ -46,7 +46,7 @@ export class BarCharts extends PureComponent<{}, State> {
 
   render() {
     const { data, width, height } = this.state;
-    console.log("barcharts state data:", data);
+
     return (
       <div className="barchart" ref={this.ref}>
         {data ? (

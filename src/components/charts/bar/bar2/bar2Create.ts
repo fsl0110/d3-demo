@@ -36,7 +36,7 @@ export const createChart = (
     .style("fill", (d: any, i: number) => d.color)
     .on("mouseover", function(d: any) {
       const element = d3.select(this);
-      console.log("element", element);
+
       svg
         .append("text")
         .attr("x", element.attr("x"))

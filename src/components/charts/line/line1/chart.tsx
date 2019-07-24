@@ -123,7 +123,7 @@ export class Line1 extends PureComponent<Props, State> {
       .range([yRange, 0]);
 
     const scales = { xScale, yScale };
-    console.log("resize width", width);
+
     return (
       <svg
         width={dimensions.width}

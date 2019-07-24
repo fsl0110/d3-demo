@@ -64,12 +64,10 @@ export class LineCharts extends PureComponent<{}, State> {
 
   updateDimensions = () => {
     const dimensions = this.ref.current.getBoundingClientRect();
-    console.log(dimensions);
-
     this.setState(
       produce((draft: any) => {
         draft.config.dimensions.width = dimensions.width;
-        /*       draft.config.svgDimensions.height = dimensions.height; */
+        /* draft.config.svgDimensions.height = dimensions.height; */
       })
     );
   };

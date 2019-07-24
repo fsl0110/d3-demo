@@ -64,24 +64,7 @@ export class LineCharts extends PureComponent<{}, State> {
         });
       })
       .catch((err: AxiosError) => null);
-
-    /*     window.addEventListener("resize", this.updateDimensions);
-    const dimensions = this.ref.current.getBoundingClientRect();
-    const { width, height } = this.state.config.dimensions;
-    if (dimensions.width !== width || dimensions.height !== height) {
-      this.updateDimensions();
-    } */
   }
-
-  /*   updateDimensions = () => {
-    const dimensions: ClientRect = this.ref.current.getBoundingClientRect();
-    this.setState(
-      produce((draft: any) => {
-        draft.config.dimensions.width = dimensions.width;
-      
-      })
-    );
-  }; */
 
   render() {
     const { data, config } = this.state;

@@ -21,7 +21,7 @@ export const chartDefaultConfig: ChartDefaultConfig = {
     ticks: {
       count: 10,
       size: 5,
-      padding: 0
+      padding: 5
     }
   },
   yAxis: {
@@ -32,7 +32,7 @@ export const chartDefaultConfig: ChartDefaultConfig = {
     ticks: {
       count: 8,
       size: 5,
-      padding: 0
+      padding: 5
     }
   }
 };

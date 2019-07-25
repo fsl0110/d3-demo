@@ -32,6 +32,7 @@ export class Line1 extends PureComponent<Props, State> {
         draft.data = nextProps.data;
       });
     }
+    return null;
   }
 
   componentDidMount() {
@@ -48,8 +49,9 @@ export class Line1 extends PureComponent<Props, State> {
   updateDimensions = () => {
     const dimensions: ClientRect = this.ref.current.getBoundingClientRect();
     this.setState(
-      produce((draft: State, state) => {
+      produce(this.state, (draft: State) => {
         draft.config.dimensions.width = dimensions.width;
+        draft.config.xAxis.ticks.count = dimensions.width / 75;
       })
     );
   };

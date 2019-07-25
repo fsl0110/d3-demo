@@ -13,15 +13,6 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
     const el = ReactFauxDOM.createElement("g");
     const { yAxis, margins, dimensions } = config;
 
-    // create axis
-    const y_axis = d3
-      .axisLeft(scales.yScale)
-      .scale(scales.yScale)
-      .tickSize(yAxis.ticks.size)
-      .tickPadding(yAxis.ticks.padding)
-      .ticks(yAxis.ticks.count)
-      .tickFormat(yAxis.ticks.format);
-
     // define axis position
     let axisXTranslate = margins.left + margins.right;
     if (yAxis.label) {
@@ -49,6 +40,15 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
       }
     }
 
+    // create axis
+    const y_axis = d3
+      .axisLeft(scales.yScale)
+      .scale(scales.yScale)
+      .tickSize(yAxis.ticks.size)
+      .tickPadding(yAxis.ticks.padding)
+      .ticks(yAxis.ticks.count)
+      .tickFormat(yAxis.ticks.format);
+
     // add axis via call into a g element
     d3.select(el)
       .append("g")
@@ -66,6 +66,21 @@ export const YAxis: FC<Props> = ({ scales, config }) => {
         "transform",
         `translate(${-textXTranslate}, ${textYTranslate}) rotate(-90)`
       );
+
+    // create grid
+    const y_grid = d3
+      .axisLeft(scales.yScale)
+      .tickSizeInner(0)
+      .tickSizeOuter(0)
+      .tickSize(-dimensions.width + margins.right * 4)
+      .ticks(5)
+      .tickFormat(null);
+
+    d3.select(el)
+      .append("g")
+      .attr("class", "chart__gridline")
+      .attr("transform", `translate(${axisXTranslate}, ${axisYTranslate})`)
+      .call(y_grid);
 
     return el.toReact();
   };

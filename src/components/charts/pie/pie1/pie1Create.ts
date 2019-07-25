@@ -8,7 +8,7 @@ export const createChart = (
   animate?: any
 ) => {
   const el = ReactFauxDOM.createElement("svg");
-  /* 
+
   const mockData = [
     {
       time: "1980-01-01",
@@ -47,6 +47,6 @@ export const createChart = (
     .attr("class", "arc");
   //@ts-ignore
   arc.append("path").attr("d", path);
- */
+
   return el.toReact();
 };

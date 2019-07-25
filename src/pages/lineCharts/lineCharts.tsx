@@ -1,7 +1,6 @@
 import React, { PureComponent, createRef } from "react";
 import { AxiosResponse, AxiosError } from "axios";
 import Skeleton from "react-loading-skeleton";
-import produce from "immer";
 import { axiosOpenFDA, openFDA } from "../../utils/api/openFDA";
 import { Line1 } from "../../components";
 import { ChartDefaultConfig } from "../../components/charts/line/line1/chart.types";

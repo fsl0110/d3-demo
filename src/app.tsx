@@ -14,7 +14,7 @@ export const App: FC = () => (
     <Page>
       <Switch>
         <Route exact path="/" component={Home} />
-        {/*     <Route path="/barcharts" component={BarCharts} /> */}
+        <Route path="/barcharts" component={BarCharts} />
         <Route path="/linecharts" component={LineCharts} />
         <Route path="*" render={() => <Redirect to="/" />} />
       </Switch>
